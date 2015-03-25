@@ -600,6 +600,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/message/MessageProcessor', './B
 			sContextPath;
 		if (bIsRelative) {
 			if (oContext) {
+				var firstPathPart = sPath.split("/")[0];
+				if (!oContext.getObject()[firstPathPart]) { 
+					// Don't request relative paths with a context not containing that (navigation) property
+					return undefined;
+				}
+				
 				sContextPath = oContext.getPath();
 				sResolvedPath = sContextPath + (jQuery.sap.endsWith(sContextPath, "/") ? "" : "/") + sPath;
 			} else {
